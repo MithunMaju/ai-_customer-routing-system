@@ -1,2 +1,1 @@
-web: gunicorn pro.wsgi
-worker: celery -A pro worker -l info --pool=solo
+web: gunicorn pro.wsgi:application & celery -A pro worker --loglevel=info
