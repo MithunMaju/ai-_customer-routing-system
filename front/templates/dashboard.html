@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+</head>
+
+<body>
+
+    <h1>Requests Dashboard</h1>
+
+    <div id="requests-container">
+
+    </div>
+
+
+    <script>
+
+        async function loadRequests() {
+
+            const token =
+                localStorage.getItem(
+                    'access'
+                )
+
+
+            const response =
+                await fetch(
+
+                    '/api/requests/',
+
+                    {
+                        headers: {
+
+                            'Authorization':
+                                `Bearer ${token}`
+
+                        }
+                    }
+
+                )
+
+
+            const data =
+                await response.json()
+
+
+            const container =
+                document.getElementById(
+                    'requests-container'
+                )
+
+
+            container.innerHTML = ''
+
+
+            data.forEach(function(request) {
+
+                container.innerHTML += `
+
+                    <div style="
+                        border:1px solid black;
+                        margin:10px;
+                        padding:10px;
+                    ">
+
+                        <h3>
+                            ${request.customer_name}
+                        </h3>
+
+                        <p>
+                            ${request.message}
+                        </p>
+
+                        <p>
+                            Status:
+                            ${request.status}
+                        </p>
+
+                        <a href="/request/${request.id}/">
+                            View Details
+                        </a>
+
+                    </div>
+
+                `
+
+            })
+
+        }
+
+
+        loadRequests()
+
+
+        setInterval(
+            loadRequests,
+            5000
+        )
+
+    </script>
+
+</body>
+
+</html>

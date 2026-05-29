@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Customer Request</title>
+</head>
+
+<body>
+    <h1>Submit Request</h1>
+    <form id="request-form">
+        <input
+            type="text"
+            id="customer_name"
+            placeholder="Customer Name"
+        >
+        <br><br>
+        <input
+            type="email"
+            id="customer_email"
+            placeholder="Customer Email"
+        >
+        <br><br>
+        <textarea
+            id="message"
+            placeholder="Enter Message"
+        ></textarea>
+        <br><br>
+        <button type="submit">
+            Submit
+        </button>
+    </form>
+
+    <script>
+        const form = document.getElementById('request-form')
+        form.addEventListener('submit',
+            async function(event) {
+                event.preventDefault()
+                const customer_name =document.getElementById('customer_name').value
+                const customer_email =document.getElementById('customer_email').value
+                const message =document.getElementById('message').value
+                const token=localStorage.getItem('access')
+                const response=await fetch('/api/requests/',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':'application/json',
+                            'Authorization':`Bearer ${token}`},
+                        body: JSON.stringify({
+                            customer_name:customer_name,
+                            customer_email:customer_email,
+                            message:message
+                        })
+                    }
+                )
+                const data=await response.json()
+                console.log(data)
+                window.location.href='/dashboard/'
+            }
+        )
+    </script>
+</body>
+</html>

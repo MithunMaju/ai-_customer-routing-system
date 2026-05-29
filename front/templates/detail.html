@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Request Detail</title>
+</head>
+
+<body>
+
+    <h1>Request Detail</h1>
+
+    <div id="detail-container">
+
+    </div>
+
+
+    <script>
+
+        async function loadDetail() {
+
+            const token =
+                localStorage.getItem(
+                    'access'
+                )
+
+
+            const path =
+                window.location.pathname
+
+
+            const parts =
+                path.split('/')
+
+
+            const requestId =
+                parts[2]
+
+
+            const response =
+                await fetch(
+
+                    `/api/requests/${requestId}/`,
+
+                    {
+                        headers: {
+
+                            'Authorization':
+                                `Bearer ${token}`
+
+                        }
+                    }
+
+                )
+
+
+            const data =
+                await response.json()
+
+
+            const container =
+                document.getElementById(
+                    'detail-container'
+                )
+
+
+            container.innerHTML = `
+
+                <h2>
+                    ${data.customer_name}
+                </h2>
+
+                <p>
+                    ${data.customer_email}
+                </p>
+
+                <p>
+                    ${data.message}
+                </p>
+
+                <p>
+                    Status:
+                    ${data.status}
+                </p>
+
+
+                <select id="status-select">
+
+                    <option value="new">
+                        New
+                    </option>
+
+                    <option value="in_progress">
+                        In Progress
+                    </option>
+
+                    <option value="resolved">
+                        Resolved
+                    </option>
+
+                </select>
+
+
+                <button onclick="updateStatus(${requestId})">
+
+                    Update Status
+
+                </button>
+
+            `
+        }
+
+
+        loadDetail()
+
+            async function updateStatus(
+    requestId
+) {
+
+    const token =
+        localStorage.getItem(
+            'access'
+        )
+
+
+    const status =
+        document.getElementById(
+            'status-select'
+        ).value
+
+
+    const response =
+        await fetch(
+
+            `/api/requests/${requestId}/`,
+
+            {
+
+                method: 'PATCH',
+
+                headers: {
+
+                    'Content-Type':
+                        'application/json',
+
+                    'Authorization':
+                        `Bearer ${token}`
+
+                },
+
+                body: JSON.stringify({
+
+                    status: status
+
+                })
+
+            }
+
+        )
+
+
+    if (response.ok) {
+
+        alert(
+            'Status Updated'
+        )
+
+        loadDetail()
+
+    }
+
+}
+    </script>
+
+</body>
+
+</html>
