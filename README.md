@@ -134,3 +134,15 @@ With two more weeks, I would improve:
 * Better frontend UI
 * Docker Compose deployment
 * Retry logic for failed AI tasks
+
+## Live Demo
+
+Demo Link : https://ai-customer-routing-system-production.up.railway.app/
+
+This project uses Celery + Redis for asynchronous request classification during local development.
+In the deployed Railway version, Redis/Celery worker infrastructure is not enabled due to free-tier service limitations. Customer requests are still stored and managed normally, but background classification tasks are not processed in production.
+
+## Demo Credentials
+
+Username: mithun
+Password: mithun
